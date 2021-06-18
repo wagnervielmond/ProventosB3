@@ -1,0 +1,2 @@
+class CaptchaResolverException(Exception):
+    pass
