@@ -17,6 +17,7 @@ class BrokerAssetExtractEventType(Enum):
 
 
 ASSET_ESPECIF_TYPE_MAPPER = {
+    'ON      NM': BrokerAssetExtractEspecif.ON.value,
     'ON NM': BrokerAssetExtractEspecif.ON.value,
     'CI': BrokerAssetExtractEspecif.CI.value,
     'REC': BrokerAssetExtractEspecif.REC.value,

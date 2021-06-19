@@ -1,6 +1,6 @@
 from aiohttp import TCPConnector
 
-from bolsaprov.bolsa.contrib.mixins.singleton import SingletonCreateMixin
+from bolsaprov.contrib.mixins.singleton import SingletonCreateMixin
 
 
 class B3HttpClientConnector(SingletonCreateMixin):

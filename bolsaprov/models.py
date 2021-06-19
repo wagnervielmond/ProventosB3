@@ -3,7 +3,7 @@ from datetime import datetime
 from decimal import Decimal
 from typing import List
 
-from bolsaprov.bolsa.constants import (
+from bolsaprov.constants import (
     ASSET_EVENT_TYPE_MAPPER,
     ASSET_ESPECIF_TYPE_MAPPER,
     BrokerAssetExtractEspecif,
@@ -46,7 +46,7 @@ class BrokerAssetExtract():
     raw_negotiation_code: str
     operation_date: datetime
     event_type: str
-    unit_amount: int
+    unit_amount: Decimal
     quotation_factor: int
     bruto_price: Decimal
     liquido_price: Decimal
@@ -66,9 +66,9 @@ class BrokerAssetExtract():
         liquido_price,
     ):
         operation_date = datetime.strptime(operation_date, '%d/%m/%Y').date()
-        asset_specification = ASSET_ESPECIF_TYPE_MAPPER[asset_specification]
-        event_type = ASSET_EVENT_TYPE_MAPPER[event_type]
-        unit_amount = int(unit_amount)
+        # asset_specification = ASSET_ESPECIF_TYPE_MAPPER[asset_specification]
+        # event_type = ASSET_EVENT_TYPE_MAPPER[event_type]
+        unit_amount = cls._format_string_to_decimal(unit_amount)
         quotation_factor = int(quotation_factor)
         bruto_price = cls._format_string_to_decimal(bruto_price)
         liquido_price = cls._format_string_to_decimal(liquido_price)

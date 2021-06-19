@@ -4,9 +4,9 @@ from functools import cached_property
 
 import aiohttp
 
-from bolsaprov.bolsa.connector import B3HttpClientConnector
-from bolsaprov.bolsa.http_client import B3HttpClient
-from bolsaprov.bolsa.responses import (
+from bolsaprov.connector import B3HttpClientConnector
+from bolsaprov.http_client import B3HttpClient
+from bolsaprov.responses import (
     GetBrokerAccountAssetExtractResponse,
     GetBrokerAccountResponse,
     GetBrokersResponse

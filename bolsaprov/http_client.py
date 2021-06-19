@@ -2,7 +2,7 @@ import logging
 
 from bs4 import BeautifulSoup
 
-from bolsaprov.bolsa.connector import B3HttpClientConnector
+from bolsaprov.connector import B3HttpClientConnector
 
 logger = logging.getLogger(__name__)
 
@@ -15,13 +15,13 @@ class B3HttpClient():
     LOGIN_URL = 'https://ceiapp.b3.com.br/CEI_Responsivo/login.aspx'
 
     ASSETS_HOME_URL = (
-        'https://cei.b3.com.br/CEI_Responsivo/ConsultarProventos.aspx'
+        'https://ceiapp.b3.com.br/CEI_Responsivo/ConsultarProventos.aspx'
     )
     BROKERS_ACCOUNT_URL = (
-        'https://cei.b3.com.br/CEI_Responsivo/ConsultarProventos.aspx'
+        'https://ceiapp.b3.com.br/CEI_Responsivo/ConsultarProventos.aspx'
     )
     ASSETS_URL = (
-        'https://cei.b3.com.br/CEI_Responsivo/ConsultarProventos.aspx'
+        'https://ceiapp.b3.com.br/CEI_Responsivo/ConsultarProventos.aspx'
     )
 
     def __init__(self, username, password, session, captcha_service):
@@ -92,9 +92,10 @@ class B3HttpClient():
             data=payload,
             headers=headers,
         ) as response:
-            logger.info(f'B3HttpClient login done - username: {self.username}')
-
             self.IS_LOGGED = True
+            logger.info(
+                f'B3HttpClient login done - username: {self.username}'
+            )
 
             return await response.text()
 

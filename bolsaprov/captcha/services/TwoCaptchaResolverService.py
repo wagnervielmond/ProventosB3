@@ -3,10 +3,10 @@ import logging
 from twocaptcha import TwoCaptcha
 from twocaptcha.api import ApiException
 
-from bolsaprov.bolsa.captcha.CaptchaResolverServiceInterface import (
+from bolsaprov.captcha.CaptchaResolverServiceInterface import (
     CaptchaResolverServiceInterface
 )
-from bolsaprov.bolsa.captcha.exceptions.CaptchaResolverException import (
+from bolsaprov.captcha.exceptions.CaptchaResolverException import (
     CaptchaResolverException
 )
 

@@ -1,7 +1,7 @@
 import logging
 from bs4 import BeautifulSoup
 
-from bolsaprov.bolsa.models import (
+from bolsaprov.models import (
     Broker,
     BrokerAccount,
     BrokerAccountParseExtraData,
@@ -26,9 +26,9 @@ class GetBrokersResponse():
     def _parse_get_brokers(self, html):
         soup = BeautifulSoup(html, 'html.parser')
         brokers_select = soup.find('select', id=self.BROKERS_SELECT_ID)
-        logging.warning(brokers_select)
-        if not brokers_select:
-            return []
+        # logging.warning(brokers_select)
+        # if not brokers_select:
+        #     return []
         brokers_option = brokers_select.find_all('option')
 
         data = soup.find(
@@ -160,24 +160,34 @@ class GetBrokerAccountAssetExtractResponse:
         if not assets_table:
             return assets_extract
 
-        table_body = assets_table.find('tbody')
-        rows = table_body.find_all('tr')
-        for row in rows:
-            raw_negotiation_name, asset_specification, raw_negotiation_code, operation_date, event_type, unit_amount, quotation_factor, bruto_price, liquido_price = row.find_all(  # NOQA
-                'td'
-            )
-            asset_extract = BrokerAssetExtract.create_from_response_fields(
-                raw_negotiation_name=raw_negotiation_name.get_text(strip=True),
-                asset_specification=asset_specification.get_text(strip=True),
-                raw_negotiation_code=raw_negotiation_code.get_text(strip=True),
-                operation_date=operation_date.get_text(strip=True),
-                event_type=event_type.get_text(strip=True),
-                unit_amount=unit_amount.get_text(strip=True),
-                quotation_factor=quotation_factor.get_text(strip=True),
-                bruto_price=bruto_price.get_text(strip=True),
-                liquido_price=liquido_price.get_text(strip=True)
-            )
-            assets_extract.append(asset_extract)
+        tables_body = assets_table.find_all('tbody') # Pega os tbody da pagina 
+        
+        # faz um loop enquanto existir tbody 
+        for index, item in enumerate(tables_body):
+            # procura os tr de cada tabela
+            rows = item.find_all('tr')
+            # lista todos os TR das tabelas
+            for row in rows:
+                raw_negotiation_name, asset_specification, raw_negotiation_code, operation_date, event_type, unit_amount, quotation_factor, bruto_price, liquido_price = row.find_all(  # NOQA
+                    'td'
+                )
+                # insere em cada coluna um nome para que possa ser possivel pegar os dados
+                asset_extract = BrokerAssetExtract.create_from_response_fields(
+                    raw_negotiation_name=raw_negotiation_name.get_text(strip=True),
+                    asset_specification=asset_specification.get_text(strip=True),
+                    raw_negotiation_code=raw_negotiation_code.get_text(strip=True),
+                    operation_date=operation_date.get_text(strip=True),
+                    event_type=event_type.get_text(strip=True),
+                    unit_amount=unit_amount.get_text(strip=True),
+                    quotation_factor=quotation_factor.get_text(strip=True),
+                    bruto_price=bruto_price.get_text(strip=True),
+                    liquido_price=liquido_price.get_text(strip=True)
+                )
+                assets_extract.append(asset_extract)
+
+            # a pagina dos proventos contem mais de uma tabela, a ultima tabela contem mais colunas. Esse break pega apenas a tabela 1 (provisoes) e a tabela 2 (creditados)
+            if index == 1:
+                break
 
         logger.debug(
             f'GetBrokerAccountAssetExtractResponse end parsing asset extract '
